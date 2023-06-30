@@ -1,17 +1,23 @@
 namespace TestsProject.TestFixtures
 {
-    public class SomeFixture2
+    public class TestFixture2
     {
         [Fact]
-        public void Test1()
+        public async Task Test1()
         {
-            Assert.True(true);
+            await Task.Delay(2_000);
         }
 
         [Fact]
-        public void Test2()
+        public async Task Test2()
         {
-            Assert.True(true);
+            await Task.Delay(2_000);
+        }
+
+        [Fact]
+        public async Task Test3()
+        {
+            await Task.Delay(2_000);
         }
     }
 }

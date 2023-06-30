@@ -47,14 +47,10 @@ namespace CustomTestFrameworkSpace
             protected override async void RunTestCases(IEnumerable<IXunitTestCase> testCases, IMessageSink executionMessageSink, ITestFrameworkExecutionOptions executionOptions)
             {
                 DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomExecutor.RunTestCases: Setuping tests: {string.Join(", ", testCases.Select(tc => tc.DisplayName))}"));
-                using var assemblyRunner1 = new CustomAssemblyRunner(TestAssembly, testCases.Take(2), DiagnosticMessageSink, executionMessageSink, executionOptions);
-                using var assemblyRunner2 = new CustomAssemblyRunner(TestAssembly, testCases.Skip(2), DiagnosticMessageSink, executionMessageSink, executionOptions);
-                DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"Running two first tests..."));
-                await assemblyRunner1.RunAsync();
-                DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"Two first tests passed"));
-                DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"Running rest tests..."));
-                await assemblyRunner2.RunAsync();
-                DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"Rest tests passed"));
+                using var assemblyRunner = new CustomAssemblyRunner(TestAssembly, testCases, DiagnosticMessageSink, executionMessageSink, executionOptions);
+                DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"Running tests..."));
+                await assemblyRunner.RunAsync();
+                DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"Tests passed"));
             }
         }
 
