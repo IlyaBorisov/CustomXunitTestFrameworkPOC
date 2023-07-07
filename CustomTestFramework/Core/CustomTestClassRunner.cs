@@ -14,41 +14,49 @@ namespace CustomTestFramework.Core
 
         protected override Task AfterTestClassStartingAsync()
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.AfterTestCollectionStartingAsync"));
             return base.AfterTestClassStartingAsync();
         }
 
         protected override Task BeforeTestClassFinishedAsync()
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.BeforeTestClassFinishedAsync"));
             return base.BeforeTestClassFinishedAsync();
         }
 
         protected override void CreateClassFixture(Type fixtureType)
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.CreateClassFixture"));
             base.CreateClassFixture(fixtureType);
         }
 
         protected override object[] CreateTestClassConstructorArguments()
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.CreateTestClassConstructorArguments"));
             return base.CreateTestClassConstructorArguments();
         }
 
         protected override string FormatConstructorArgsMissingMessage(ConstructorInfo constructor, IReadOnlyList<Tuple<int, ParameterInfo>> unusedArguments)
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.FormatConstructorArgsMissingMessage"));
             return base.FormatConstructorArgsMissingMessage(constructor, unusedArguments);
         }
 
         protected override ConstructorInfo SelectTestClassConstructor()
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.SelectTestClassConstructor"));
             return base.SelectTestClassConstructor();
         }
 
         protected override bool TryGetConstructorArgument(ConstructorInfo constructor, int index, ParameterInfo parameter, out object argumentValue)
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.TryGetConstructorArgument"));
             return base.TryGetConstructorArgument(constructor, index, parameter, out argumentValue);
         }
 
         protected override async Task<RunSummary> RunTestMethodsAsync()
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.RunTestMethodsAsync"));
             var disableParallelization = TestClass.Class.GetCustomAttributes(typeof(CollectionAttribute)).Any();
 
             if (disableParallelization)
@@ -80,8 +88,11 @@ namespace CustomTestFramework.Core
             return summary;
         }
 
-        protected override Task<RunSummary> RunTestMethodAsync(ITestMethod testMethod, IReflectionMethodInfo method, IEnumerable<IXunitTestCase> testCases, object[] constructorArguments) =>
-            new CustomTestMethodRunner(testMethod, Class, method, testCases, DiagnosticMessageSink, MessageBus, new ExceptionAggregator(Aggregator), CancellationTokenSource, constructorArguments).RunAsync();
+        protected override Task<RunSummary> RunTestMethodAsync(ITestMethod testMethod, IReflectionMethodInfo method, IEnumerable<IXunitTestCase> testCases, object[] constructorArguments)
+        {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestClassRunner.RunTestMethodAsync"));
+            return new CustomTestMethodRunner(testMethod, Class, method, testCases, DiagnosticMessageSink, MessageBus, new ExceptionAggregator(Aggregator), CancellationTokenSource, constructorArguments).RunAsync();
+        }
 
         private static Exception Unwrap(Exception ex)
         {

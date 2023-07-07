@@ -18,16 +18,19 @@ namespace CustomTestFramework.Core
 
         protected override void AfterTestMethodStarting()
         {
+            _diagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestMethodRunner.AfterTestMethodStarting"));
             base.AfterTestMethodStarting();
         }
 
         protected override void BeforeTestMethodFinished()
         {
+            _diagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestMethodRunner.BeforeTestMethodFinished"));
             base.BeforeTestMethodFinished();
         }
 
         protected override async Task<RunSummary> RunTestCasesAsync()
         {
+            _diagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestMethodRunner.RunTestCasesAsync"));
             var disableParallelization = TestMethod.TestClass.Class.GetCustomAttributes(typeof(CollectionAttribute)).Any() ||
                                          TestMethod.Method.GetCustomAttributes(typeof(MemberDataAttribute)).Any(a => a.GetNamedArgument<bool>(nameof(MemberDataAttribute.DisableDiscoveryEnumeration)));
 
@@ -49,6 +52,7 @@ namespace CustomTestFramework.Core
 
         protected override async Task<RunSummary> RunTestCaseAsync(IXunitTestCase testCase)
         {
+            _diagnosticMessageSink.OnMessage(new DiagnosticMessage($"CustomTestMethodRunner.RunTestCaseAsync"));
             var args = _constructorArguments.Select(a => a is TestOutputHelper ? new TestOutputHelper() : a).ToArray();
 
             var action = () => testCase.RunAsync(_diagnosticMessageSink, MessageBus, args, new ExceptionAggregator(Aggregator), CancellationTokenSource);

@@ -12,6 +12,7 @@ namespace CustomTestFramework.Core
         }
         protected override ITestFrameworkExecutor CreateExecutor(AssemblyName assemblyName)
         {
+            DiagnosticMessageSink.OnMessage(new DiagnosticMessage($"TestFramework.CreateExecutor"));
             var customExecutor = new CustomExecutor(assemblyName, SourceInformationProvider, DiagnosticMessageSink);
             return customExecutor;
         }
