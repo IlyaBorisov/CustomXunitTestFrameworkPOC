@@ -9,16 +9,16 @@ namespace CustomTestFramework.Core
     }
     public abstract class ISink
     {
-        protected readonly IMessageSink TestOutput;
+        protected readonly IMessageSink Output;
         public ISink(IMessageSink output)
         {
-            TestOutput = output;
+            Output = output;
         }
     }
     public class TestFixture<TSetup> : TestFixture, IClassFixture<TSetup> where TSetup: Setup
     {
         protected readonly TSetup Setup;
-        public TestFixture(IMessageSink output, TSetup setup) : base(output)
+        public TestFixture(ITestOutputHelper output, TSetup setup) : base(output)
         {
             Setup = setup;
         }
@@ -26,10 +26,10 @@ namespace CustomTestFramework.Core
     public class TestFixture
     {
         // static methods
-        protected readonly IMessageSink TestOutput;
-        public TestFixture(IMessageSink output)
+        protected readonly ITestOutputHelper Output;
+        public TestFixture(ITestOutputHelper output)
         {
-            TestOutput = output;
+            Output = output;
         }
     }
 }
